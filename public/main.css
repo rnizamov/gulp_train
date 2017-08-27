@@ -1,0 +1,15 @@
+div {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  background: rgba(123,12,51,0.2);
+}
+div p {
+  font-size: 25px;
+  color: #000;
+}
+div p span {
+  color: #f00;
+}
+
+/*# sourceMappingURL=main.css.map */
