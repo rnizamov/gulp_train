@@ -9,8 +9,18 @@ const newer = require('gulp-newer');
 const browserSync = require('browser-sync').create();
 const notify = require('gulp-notify');
 const multipipe = require('multipipe');
+const through2 = require('through2').obj;
+const File = require('vinyl');
+const eslint = require('gulp-eslint');
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'; 
+
+gulp.task('lint',function(){
+	return gulp.src('frontend/**/*.js')
+		.pipe(eslint())
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError());
+ });
 
 gulp.task('styles',function() {
 	return multipipe ( 
@@ -26,11 +36,26 @@ gulp.task('clean', function() {
 	return del('public');
 });
 
-gulp.task('assets',function() {
-	return gulp.src('frontend/assets/**', {since: gulp.lastRun('assets')})
-		.pipe(newer('public'))
-		.pipe(debug({title: 'assets'}))
-		.pipe(gulp.dest('public'));
+
+gulp.task('assets', function() {
+	const mtimes = {};
+	return gulp.src('frontend/assets/**/*.*')
+			.pipe(through2(
+				function(file, enc, callback){
+				mtimes[file.relative] = file.stat.mtime;
+				callback(null,file);
+			},
+			function(callback) {
+				let manifest = new File({
+					content: new Buffer(JSON.stringify(mtimes)),
+					base: process.cwd(),
+					path: process.cwd() + '/manifest.json'
+				});
+				this.push(manifest);
+				callback();
+			}
+			))
+			.pipe(gulp.dest('public'));
 });
 
 gulp.task('build',gulp.series('clean',gulp.parallel('styles','assets')));
