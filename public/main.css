@@ -1,15 +1,6 @@
-div {
-  width: 300px;
-  height: 300px;
-  margin: 0 auto;
-  background: rgba(123,12,51,0.2);
-}
-div p {
-  font-size: 25px;
-  color: #000;
-}
-div p span {
-  color: #f00;
+p {
+  font-size: 12px;
+  padding: 1px;
 }
 
-/*# sourceMappingURL=main.css.map */
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1haW4uc3R5bCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNDLFdBQVUsS0FBVjtFQUNBLFNBQVEsSUFBUiIsImZpbGUiOiJtYWluLmNzcyIsInNvdXJjZXNDb250ZW50IjpbInAgXHJcblx0Zm9udC1zaXplIDEycHhcclxuXHRwYWRkaW5nIDFweCAiXX0= */
