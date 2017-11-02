@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "browser-sync": "^2.18.13",
+    "cross-env": "^5.1.1",
     "del": "^3.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-debug": "^3.1.0",
@@ -24,7 +25,8 @@
     "vinyl": "^2.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "production": "cross-env NODE_ENV=production gulp",
+    "development": "cross-env NODE_ENV=development gulp"
   },
   "author": "",
   "license": "ISC"
