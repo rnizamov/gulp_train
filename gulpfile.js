@@ -11,14 +11,18 @@ const notify = require('gulp-notify');
 const multipipe = require('multipipe');
 const through2 = require('through2').obj;
 const File = require('vinyl');
+const autoprefixer = require('gulp-autoprefixer');
 const eslint = require('gulp-eslint');
+const cached = require('gulp-cached');
 
 const isDevelopment = process.env.NODE_ENV ;
 
 gulp.task('styles',function() {
 	return gulp.src('frontend/styles/main.styl')
+		.pipe(cached('styles'))
 		.pipe(gulpIf(isDevelopment == 'development',sourcemaps.init()))
 		.pipe(stylus())
+		.pipe(autoprefixer())
         .pipe(gulpIf(isDevelopment == 'development',sourcemaps.write()))
 		.pipe(gulp.dest('public'));
 });
@@ -29,6 +33,9 @@ gulp.task('clean', function() {
 
 gulp.task('assets', function() {
     return gulp.src('frontend/assets/**')
+        .pipe(debug({title:"src"}))
+		.pipe(newer('public/assets'))
+        .pipe(debug({title:"newer"}))
 		.pipe(gulp.dest('public/assets'));
 });
 
