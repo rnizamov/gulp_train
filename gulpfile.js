@@ -19,7 +19,6 @@ const isDevelopment = process.env.NODE_ENV ;
 
 gulp.task('styles',function() {
 	return gulp.src('frontend/styles/main.styl')
-		.pipe(cached('styles'))
 		.pipe(gulpIf(isDevelopment == 'development',sourcemaps.init()))
 		.pipe(stylus())
 		.pipe(autoprefixer())
@@ -33,15 +32,26 @@ gulp.task('clean', function() {
 
 gulp.task('assets', function() {
     return gulp.src('frontend/assets/**')
-        .pipe(debug({title:"src"}))
 		.pipe(newer('public/assets'))
-        .pipe(debug({title:"newer"}))
 		.pipe(gulp.dest('public/assets'));
 });
 
-gulp.task('default',gulp.series(
+gulp.task('build',gulp.series(
 	'clean',
 	gulp.parallel('styles','assets')));
+
+gulp.task('watch',function () {
+    gulp.watch('frontend/styles/**/*.*',gulp.series('styles'));
+    gulp.watch('frontend/assets/**/*.*',gulp.series('assets'));
+});
+
+gulp.task('dev',gulp.series('build','watch'));
+
+
+// gulp.task('watch',function() {
+// 	gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
+// 	gulp.watch('frontend/assets/**/*.*', gulp.series('assets'));
+// });
 
 // gulp.task('lint',function(){
 // 	return gulp.src('frontend/**/*.js')
