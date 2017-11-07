@@ -16,7 +16,6 @@ const eslint = require('gulp-eslint');
 const cached = require('gulp-cached');
 const pug = require('gulp-pug');
 const path = require('path');
-const browserSync = require('browser-sync').create();
 const isDevelopment = process.env.NODE_ENV ;
 
 gulp.task('clean', function() {
@@ -64,71 +63,6 @@ gulp.task('serve',function () {
 	browserSync.watch('public/**/*.*').on('change',browserSync.reload);
 })
 
-gulp.task('dev',gulp.series('build','watch'));
-
-
-// gulp.task('watch',function() {
-// 	gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
-// 	gulp.watch('frontend/assets/**/*.*', gulp.series('assets'));
-// });
-
-// gulp.task('lint',function(){
-// 	return gulp.src('frontend/**/*.js')
-// 		.pipe(eslint())
-// 		.pipe(eslint.format())
-// 		.pipe(eslint.failAfterError());
-//  });
-//
-// gulp.task('styles',function() {
-// 	return multipipe (
-// 		gulp.src('frontend/styles/main.styl'),
-// 		gulpIf(isDevelopment, sourcemaps.init()),
-// 		stylus(),
-//  		gulpIf(isDevelopment, sourcemaps.write()),
-// 		gulp.dest('public')
-// 	).on('error', notify.onError());
-// });
-//
-// gulp.task('clean', function() {
-// 	return del('public');
-// });
-//
-//
-// gulp.task('assets', function() {
-// 	const mtimes = {};
-// 	return gulp.src('frontend/assets/**/*.*')
-// 			.pipe(through2(
-// 				function(file, enc, callback){
-// 				mtimes[file.relative] = file.stat.mtime;
-// 				callback(null,file);
-// 			},
-// 			function(callback) {
-// 				let manifest = new File({
-// 					content: new Buffer(JSON.stringify(mtimes)),
-// 					base: process.cwd(),
-// 					path: process.cwd() + '/manifest.json'
-// 				});
-// 				this.push(manifest);
-// 				callback();
-// 			}
-// 			))
-// 			.pipe(gulp.dest('public'));
-// });
-//
-// gulp.task('build',gulp.series('clean',gulp.parallel('styles','assets')));
-//
-// gulp.task('watch',function() {
-// 	gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
-// 	gulp.watch('frontend/assets/**/*.*', gulp.series('assets'));
-// });
-//
-//
-// gulp.task('serve',function() {
-// 	browserSync.init({
-// 		server: 'public'
-// 	});
-//
-// 	browserSync.watch('public/**/*.*').on('change', browserSync.reload);
-// });
-//
-// gulp.task('dev',gulp.series('build', gulp.parallel('watch','serve')));
+gulp.task('dev',
+	gulp.series('build', gulp.parallel('watch','serve'))
+);
