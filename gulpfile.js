@@ -14,8 +14,14 @@ const File = require('vinyl');
 const autoprefixer = require('gulp-autoprefixer');
 const eslint = require('gulp-eslint');
 const cached = require('gulp-cached');
-
+const pug = require('gulp-pug');
+const path = require('path');
+const browserSync = require('browser-sync').create();
 const isDevelopment = process.env.NODE_ENV ;
+
+gulp.task('clean', function() {
+    return del('public');
+});
 
 gulp.task('styles',function() {
 	return gulp.src('frontend/styles/main.styl')
@@ -26,8 +32,11 @@ gulp.task('styles',function() {
 		.pipe(gulp.dest('public'));
 });
 
-gulp.task('clean', function() {
-	return del('public');
+gulp.task('pug', function() {
+    return gulp.src('frontend/pug/**/*.*')
+		.pipe(cached('pug'))
+		.pipe(pug({pretty: true}))
+        .pipe(gulp.dest('public/html'));
 });
 
 gulp.task('assets', function() {
@@ -38,12 +47,22 @@ gulp.task('assets', function() {
 
 gulp.task('build',gulp.series(
 	'clean',
-	gulp.parallel('styles','assets')));
+	gulp.parallel('styles','assets','pug')));
 
 gulp.task('watch',function () {
     gulp.watch('frontend/styles/**/*.*',gulp.series('styles'));
     gulp.watch('frontend/assets/**/*.*',gulp.series('assets'));
+    gulp.watch('frontend/pug/**/*.*',gulp.series('pug')).on('unlink',function(filepath) {
+		delete cached.caches.pug[path.resolve(filepath)];
+    });
 });
+
+gulp.task('serve',function () {
+	browserSync.init({
+		server: 'public'
+	});
+	browserSync.watch('public/**/*.*').on('change',browserSync.reload);
+})
 
 gulp.task('dev',gulp.series('build','watch'));
 
