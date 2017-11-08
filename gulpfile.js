@@ -96,18 +96,23 @@ gulp.task('build',gulp.series(
 
 gulp.task('watch',function () {
     gulp.watch(options.watch.styl,gulp.series('style'));
-    gulp.watch(options.watch.image,gulp.series('image'));
+
+    gulp.watch(options.watch.image,gulp.series('image')).on('unlink',function(filepath) {
+        var deleteImage = options.build.image + '//' + path.relative('src/image',filepath);
+        fs.unlink(deleteImage,function(err){
+            if(err) return console.log(err);
+            console.log('file deleted successfully');
+        });
+    });
+
     gulp.watch(options.watch.template,gulp.series('pug')).on('unlink',function(filepath) {
 		delete cached.caches.pug[path.resolve(filepath)];
-
 		var name = path.basename(filepath,'.pug');
 		var html = options.build.html + '//' + name + '.html';
-
         fs.unlink(html,function(err){
             if(err) return console.log(err);
             console.log('file deleted successfully');
         });
-
     });
 });
 
