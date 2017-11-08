@@ -23,12 +23,19 @@ gulp.task('clean', function() {
 });
 
 gulp.task('styles',function() {
-	return gulp.src('frontend/styles/main.styl')
-		.pipe(gulpIf(isDevelopment == 'development',sourcemaps.init()))
-		.pipe(stylus())
-		.pipe(autoprefixer())
-        .pipe(gulpIf(isDevelopment == 'development',sourcemaps.write()))
-		.pipe(gulp.dest('public'));
+	return multipipe(
+		gulp.src('frontend/styles/main.styl'),
+		gulpIf(isDevelopment == 'development',sourcemaps.init()),
+		stylus(),
+		autoprefixer(),
+        gulpIf(isDevelopment == 'development',sourcemaps.write()),
+		gulp.dest('public')
+	).on('error',notify.onError(function(err) {
+			return {
+				title: 'Styles',
+				message: err.message
+			};
+		 }));
 });
 
 gulp.task('pug', function() {
