@@ -55,7 +55,7 @@ gulp.task('style',function() {
 		gulp.dest(options.build.css)
 	).on('error',notify.onError(function(err) {
 			return {
-				title: 'Styles Err',
+				title: 'Style Err',
 				message: err.message
 			};
 		 }));
@@ -104,7 +104,7 @@ gulp.task('watch',function () {
 gulp.task('serve',function () {
 	browserSync.init({
 		server: options.build.html,
-		port: 8080
+
 	});
 	browserSync.watch(options.watch.sync).on('change',browserSync.reload);
 });
