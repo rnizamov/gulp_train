@@ -95,7 +95,8 @@ gulp.task('build',gulp.series(
 
 gulp.task('watch',function () {
     gulp.watch(options.watch.styl,gulp.series('style'));
-    gulp.watch(options.watch.image,gulp.series('image'));
+    gulp.watch(options.watch.image,gulp.series('image')).on('unlink',function(filepath) {
+    });
     gulp.watch(options.watch.template,gulp.series('pug')).on('unlink',function(filepath) {
 		delete cached.caches.pug[path.resolve(filepath)];
     });
