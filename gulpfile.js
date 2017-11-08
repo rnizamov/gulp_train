@@ -17,13 +17,14 @@ const cached = require('gulp-cached');
 const pug = require('gulp-pug');
 const path = require('path');
 const isDevelopment = process.env.NODE_ENV ;
+const combiner = require('stream-combiner2').obj;
 
 gulp.task('clean', function() {
     return del('public');
 });
 
 gulp.task('styles',function() {
-	return multipipe(
+	return combiner(
 		gulp.src('frontend/styles/main.styl'),
 		gulpIf(isDevelopment == 'development',sourcemaps.init()),
 		stylus(),

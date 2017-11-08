@@ -23,6 +23,7 @@
     "gulp-sourcemaps": "^2.6.1",
     "gulp-stylus": "^2.6.0",
     "multipipe": "^1.0.2",
+    "stream-combiner2": "^1.1.1",
     "stylus": "^0.54.5",
     "through2": "^2.0.3",
     "vinyl": "^2.1.0"
