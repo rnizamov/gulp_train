@@ -29,7 +29,7 @@ var options = {
 		build:'build',
         css:'build/css',
 		html:'build',
-        image:'build/image'
+        image:'src/image/**/*.*'
 	},
 	watch: {
         styl:'src/style/**/*.styl',
